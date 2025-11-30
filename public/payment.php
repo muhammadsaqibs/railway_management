@@ -16,17 +16,29 @@ $ticket_id = $_GET['ticket_id'];
 $fare = 1000;
 $message = "";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $method = $_POST['payment_method'];
-  
-  $sql = "INSERT INTO Payment (ticket_id, amount, payment_method)
-          VALUES ('$ticket_id', '$fare', '$method')";
+// Check if ticket exists in DB
+$stmt_check = $conn->prepare("SELECT * FROM ticket WHERE ticket_id = ?");
+$stmt_check->bind_param("i", $ticket_id);
+$stmt_check->execute();
+$result = $stmt_check->get_result();
 
-  if ($conn->query($sql)) {
-    $message = "🎉 Seat booked successfully! Please take a screenshot of this page.";
-  } else {
-    $message = "Payment failed. Try again.";
-  }
+if ($result->num_rows === 0) {
+    echo "⚠ Ticket not found. Please book a ticket first.";
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $method = $_POST['payment_method'];
+
+    // Insert payment safely using prepared statement
+    $stmt = $conn->prepare("INSERT INTO Payment (ticket_id, amount, payment_method) VALUES (?, ?, ?)");
+    $stmt->bind_param("iis", $ticket_id, $fare, $method);
+
+    if ($stmt->execute()) {
+        $message = "🎉 Seat booked successfully! Please take a screenshot of this page.";
+    } else {
+        $message = "❌ Payment failed: " . $conn->error;
+    }
 }
 ?>
 
