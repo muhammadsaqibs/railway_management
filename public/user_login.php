@@ -29,10 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <title>User Login</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
 </head>
-<body class="bg-light">
-  <div class="container mt-5" style="max-width: 500px;">
-    <h3 class="text-center mb-4">🔐 User Login</h3>
+<body>
+  <div class="container" style="max-width: 500px;">
+    <h3 class="text-center mb-4 text-white">🔐 User Login</h3>
     <?php if ($error): ?>
       <div class="alert alert-danger text-center"><?= $error ?></div>
     <?php endif; ?>
@@ -40,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <input type="email" name="email" class="form-control mb-3" placeholder="Email" required>
       <input type="password" name="password" class="form-control mb-3" placeholder="Password" required>
       <button type="submit" class="btn btn-success w-100">Login</button>
-      <p class="mt-3 text-center">New user? <a href="user_signup.php">Sign up here</a></p>
+      <p class="mt-3 text-center text-white">New user? <a href="user_signup.php" class="text-white">Sign up here</a></p>
     </form>
   </div>
 </body>

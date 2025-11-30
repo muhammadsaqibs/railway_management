@@ -23,10 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <title>Admin Login</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
 </head>
-<body class="bg-light">
-  <div class="container mt-5" style="max-width: 500px;">
-    <h3 class="text-center mb-4">🔐 Admin Login</h3>
+<body>
+  <div class="container" style="max-width: 500px;">
+    <h3 class="text-center mb-4 text-white">🔐 Admin Login</h3>
     <?php if ($error): ?>
       <div class="alert alert-danger text-center"><?= $error ?></div>
     <?php endif; ?>

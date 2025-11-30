@@ -31,40 +31,47 @@ $result = $conn->query($query);
   <meta charset="UTF-8">
   <title>View Bookings</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
 </head>
-<body class="bg-light">
-  <div class="container mt-5">
-    <h3 class="text-center mb-4">📋 All Bookings</h3>
+<body>
+  <div class="container">
+    <h3 class="text-center mb-4 text-white">📋 All Bookings</h3>
     <a href="admin_dashboard.php" class="btn btn-secondary mb-3">← Back to Dashboard</a>
 
-    <table class="table table-bordered table-hover bg-white">
-      <thead class="table-dark">
-        <tr>
-          <th>Ticket ID</th>
-          <th>Passenger</th>
-          <th>CNIC</th>
-          <th>Train</th>
-          <th>From</th>
-          <th>To</th>
-          <th>Seat No</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php while ($row = $result->fetch_assoc()): ?>
-          <tr>
-            <td><?= $row['ticket_id'] ?></td>
-            <td><?= $row['passenger_name'] ?></td>
-            <td><?= $row['cnic'] ?></td>
-            <td><?= $row['train_name'] ?></td>
-            <td><?= $row['source_city'] ?></td>
-            <td><?= $row['destination_city'] ?></td>
-            <td><?= $row['seat_no'] ?></td>
-            <td><?= $row['status'] ?></td>
-          </tr>
-        <?php endwhile; ?>
-      </tbody>
-    </table>
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Ticket ID</th>
+                <th>Passenger</th>
+                <th>CNIC</th>
+                <th>Train</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Seat No</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php while ($row = $result->fetch_assoc()): ?>
+                <tr>
+                  <td class="text-white"><?= $row['ticket_id'] ?></td>
+                  <td class="text-white"><?= htmlspecialchars($row['passenger_name']) ?></td>
+                  <td class="text-white"><?= htmlspecialchars($row['cnic']) ?></td>
+                  <td class="text-white"><?= htmlspecialchars($row['train_name']) ?></td>
+                  <td class="text-white"><?= htmlspecialchars($row['source_city']) ?></td>
+                  <td class="text-white"><?= htmlspecialchars($row['destination_city']) ?></td>
+                  <td class="text-white"><?= $row['seat_no'] ?></td>
+                  <td class="text-white"><?= htmlspecialchars($row['status']) ?></td>
+                </tr>
+              <?php endwhile; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>

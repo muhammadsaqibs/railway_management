@@ -52,19 +52,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <title>Cancel Seat</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
 </head>
-<body class="bg-light">
-<div class="container mt-5" style="max-width: 600px;">
-  <h3 class="text-center mb-4">🚫 Cancel Booked Seat</h3>
+<body>
+<div class="container" style="max-width: 600px;">
+  <h3 class="text-center mb-4 text-white">🚫 Cancel Booked Seat</h3>
   <a href="user_dashboard.php" class="btn btn-secondary mb-3">← Back to Dashboard</a>
   <?php if ($message): ?>
     <div class="alert alert-info text-center"><?= $message ?></div>
   <?php endif; ?>
-  <form method="POST">
-    <input type="number" name="ticket_id" class="form-control mb-3" placeholder="Enter Ticket ID (optional)">
-    <input type="text" name="cnic" class="form-control mb-3" placeholder="Or Enter CNIC (without dashes)">
-    <button type="submit" class="btn btn-danger w-100">Cancel Seat</button>
-  </form>
+
+  <div class="card">
+    <div class="card-body">
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label text-white">Ticket ID (Optional)</label>
+          <input type="number" name="ticket_id" class="form-control" placeholder="Enter Ticket ID">
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-white">CNIC (Without Dashes)</label>
+          <input type="text" name="cnic" class="form-control" placeholder="Enter CNIC">
+        </div>
+        <button type="submit" class="btn btn-danger w-100">Cancel Seat</button>
+      </form>
+    </div>
+  </div>
 </div>
 </body>
 </html>
