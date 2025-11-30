@@ -13,10 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $from = $_POST['from_station'];
   $to = $_POST['to_station'];
   $seats = $_POST['total_seats'];
-  $time = $_POST['schedule_time'];
+  $departure = $_POST['departure_time'];
+  $arrival = $_POST['arrival_time'];
+  $fare = $_POST['fare'];
 
-  $insert = "INSERT INTO Train (train_name, from_station, to_station, total_seats, available_seats, schedule_time)
-             VALUES ('$name', '$from', '$to', '$seats', '$seats', '$time')";
+  $insert = "INSERT INTO Train (train_name, from_station, to_station, total_seats, available_seats, schedule_time, departure_time, arrival_time, fare)
+             VALUES ('$name', '$from', '$to', '$seats', '$seats', '$departure', '$departure', '$arrival', '$fare')";
 
   if ($conn->query($insert)) {
     $success = "✅ Train added successfully.";
@@ -77,8 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="number" name="total_seats" class="form-control" placeholder="Total Seats" required>
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">Schedule Time</label>
-            <input type="time" name="schedule_time" class="form-control" required>
+            <label class="form-label text-white">Departure Time</label>
+            <input type="time" name="departure_time" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-white">Arrival Time</label>
+            <input type="time" name="arrival_time" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-white">Fare (Rs.)</label>
+            <input type="number" name="fare" class="form-control" step="0.01" placeholder="e.g. 1500.00" required>
           </div>
           <button type="submit" class="btn btn-primary w-100">Add Train</button>
         </form>

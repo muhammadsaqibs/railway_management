@@ -7,8 +7,9 @@ if (!isset($_SESSION['user_logged_in']) && !isset($_SESSION['admin_logged_in']))
 include('../config/db.php');
 
 $query = "
-  SELECT 
+  SELECT
     t.ticket_id,
+    t.ticket_token,
     p.name AS passenger_name,
     t.cnic,
     tr.train_name,
@@ -17,6 +18,7 @@ $query = "
     t.seat_no,
     t.source_city,
     t.destination_city,
+    t.booking_time,
     t.status
   FROM Ticket t
   JOIN Passenger p ON t.passenger_id = p.passenger_id
@@ -45,12 +47,14 @@ $result = $conn->query($query);
             <thead>
               <tr>
                 <th>Ticket ID</th>
+                <th>Ticket Token</th>
                 <th>Passenger</th>
                 <th>CNIC</th>
                 <th>Train</th>
                 <th>From</th>
                 <th>To</th>
                 <th>Seat No</th>
+                <th>Booking Time</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -58,12 +62,14 @@ $result = $conn->query($query);
               <?php while ($row = $result->fetch_assoc()): ?>
                 <tr>
                   <td class="text-white"><?= $row['ticket_id'] ?></td>
+                  <td class="text-white"><?= htmlspecialchars($row['ticket_token']) ?></td>
                   <td class="text-white"><?= htmlspecialchars($row['passenger_name']) ?></td>
                   <td class="text-white"><?= htmlspecialchars($row['cnic']) ?></td>
                   <td class="text-white"><?= htmlspecialchars($row['train_name']) ?></td>
                   <td class="text-white"><?= htmlspecialchars($row['source_city']) ?></td>
                   <td class="text-white"><?= htmlspecialchars($row['destination_city']) ?></td>
                   <td class="text-white"><?= $row['seat_no'] ?></td>
+                  <td class="text-white"><?= date('d M Y, H:i', strtotime($row['booking_time'])) ?></td>
                   <td class="text-white"><?= htmlspecialchars($row['status']) ?></td>
                 </tr>
               <?php endwhile; ?>
