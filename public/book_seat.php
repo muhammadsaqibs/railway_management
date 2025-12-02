@@ -39,11 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_ticket'])) {
       $booking_time = date('Y-m-d H:i:s');
 
       $insert = "INSERT INTO Ticket (passenger_id, train_id, seat_no, source_city, destination_city, cnic, ticket_token, booking_time, status)
-                 VALUES ('$passenger_id', '$train_id', '$seat_no', '$source', '$destination', '$cnic', '$ticket_token', '$booking_time', 'Booked')";
+                 VALUES ('$passenger_id', '$train_id', '$seat_no', '$source', '$destination', '$cnic', '$ticket_token', '$booking_time', 'Pending')";
 
       if ($conn->query($insert)) {
-        $conn->query("UPDATE Train SET available_seats = available_seats - 1 WHERE train_id = $train_id");
-        header("Location: user_dashboard.php?booking=success");
+        $ticket_id = $conn->insert_id;
+        header("Location: payment.php?ticket_id=$ticket_id");
         exit;
       } else {
         $success = "Booking failed.";

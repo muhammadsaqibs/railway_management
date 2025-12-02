@@ -66,15 +66,15 @@ $result = $conn->query($query);
 
                   <!-- Departure -->
                   <td class="text-dark">
-                    <?= isset($row['departure_time']) && $row['departure_time'] !== "" 
-                      ? date('h:i A', strtotime($row['departure_time'])) 
+                    <?= isset($row['departure_time']) && $row['departure_time'] !== ""
+                      ? date('h:i A', strtotime($row['departure_time']))
                       : 'N/A' ?>
                   </td>
 
                   <!-- Arrival -->
                   <td class="text-dark">
-                    <?= isset($row['arrival_time']) && $row['arrival_time'] !== "" 
-                      ? date('h:i A', strtotime($row['arrival_time'])) 
+                    <?= isset($row['arrival_time']) && $row['arrival_time'] !== ""
+                      ? date('h:i A', strtotime($row['arrival_time']))
                       : 'N/A' ?>
                   </td>
 
@@ -84,8 +84,8 @@ $result = $conn->query($query);
 
                   <!-- Fare -->
                   <td class="text-dark">
-                    <?= isset($row['fare']) && $row['fare'] !== "" 
-                      ? number_format($row['fare'], 2) 
+                    <?= isset($row['fare']) && $row['fare'] !== ""
+                      ? number_format($row['fare'], 2)
                       : 'N/A' ?>
                   </td>
 
