@@ -3,25 +3,32 @@ include('../config/db.php');
 $success = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $name = $_POST['name'];
-  $email = $_POST['email'];
-  $phone = $_POST['phone'];
-  $cnic = $_POST['cnic'];
-  $password = $_POST['password'];
+  $name     = trim($_POST['name'] ?? '');
+  $email    = trim($_POST['email'] ?? '');
+  $password = trim($_POST['password'] ?? '');
 
-  $check = "SELECT * FROM Passenger WHERE email = '$email'";
-  $result = $conn->query($check);
-
-  if ($result->num_rows > 0) {
-    $success = "Email already registered. Try login.";
+  if ($name === '' || $email === '' || $password === '') {
+    $success = "Please fill in all fields.";
+  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $success = "Please enter a valid email address.";
+  } elseif (strlen($password) < 4) {
+    $success = "Password must be at least 4 characters.";
   } else {
-    $sql = "INSERT INTO Passenger (name, email, phone, cnic, password)
-            VALUES ('$name', '$email', '$phone', '$cnic', '$password')";
-    if ($conn->query($sql)) {
-      header("Location: user_login.php?msg=registered");
-      exit;
+    $check = "SELECT * FROM Passenger WHERE email = '$email'";
+    $result = $conn->query($check);
+
+    if ($result && $result->num_rows > 0) {
+      $success = "Email already registered. Try login.";
     } else {
-      $success = "Registration failed. Try again.";
+      // Insert only required fields; phone and cnic are optional/NULL
+      $sql = "INSERT INTO Passenger (name, email, password)
+              VALUES ('$name', '$email', '$password')";
+      if ($conn->query($sql)) {
+        header("Location: user_login.php?msg=registered");
+        exit;
+      } else {
+        $success = "Registration failed. Try again.";
+      }
     }
   }
 }
@@ -31,25 +38,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>User Signup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Sign Up - Railway Management</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
 </head>
 <body>
-  <div class="container" style="max-width: 500px;">
-    <h3 class="text-center mb-4 text-white">👤 User Sign Up</h3>
-    <?php if ($success): ?>
-      <div class="alert alert-warning text-center"><?= $success ?></div>
-    <?php endif; ?>
-    <form method="POST">
-      <input type="text" name="name" class="form-control mb-3" placeholder="Full Name" required>
-      <input type="email" name="email" class="form-control mb-3" placeholder="Email" required>
-      <input type="text" name="phone" class="form-control mb-3" placeholder="Phone" required>
-      <input type="text" name="cnic" class="form-control mb-3" placeholder="CNIC (without dashes)" required>
-      <input type="password" name="password" class="form-control mb-3" placeholder="Password" required>
-      <button type="submit" class="btn btn-primary w-100">Register</button>
-      <p class="mt-3 text-center text-white">Already registered? <a href="user_login.php" class="text-white">Login here</a></p>
-    </form>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container-fluid">
+      <span class="navbar-brand">Railway Management</span>
+      <div>
+        <a href="home.php" class="btn btn-outline-light btn-sm">Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="auth-card container-small">
+      <h3>👤 User Sign Up</h3>
+      
+      <?php if ($success): ?>
+        <div class="alert alert-warning"><?= $success ?></div>
+      <?php endif; ?>
+      
+      <form method="POST">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" name="name" id="name" class="form-control" placeholder="Enter your full name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Create a password (min 4 characters)" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-100">Register</button>
+      </form>
+      
+      <p>Already registered? <a href="user_login.php">Login here</a></p>
+    </div>
   </div>
 </body>
 </html>
+

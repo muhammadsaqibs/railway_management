@@ -27,22 +27,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>User Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Login - Railway Management</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
 </head>
 <body>
-  <div class="container" style="max-width: 500px;">
-    <h3 class="text-center mb-4 text-white">🔐 User Login</h3>
-    <?php if ($error): ?>
-      <div class="alert alert-danger text-center"><?= $error ?></div>
-    <?php endif; ?>
-    <form method="POST">
-      <input type="email" name="email" class="form-control mb-3" placeholder="Email" required>
-      <input type="password" name="password" class="form-control mb-3" placeholder="Password" required>
-      <button type="submit" class="btn btn-success w-100">Login</button>
-      <p class="mt-3 text-center text-white">New user? <a href="user_signup.php" class="text-white">Sign up here</a></p>
-    </form>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container-fluid">
+      <span class="navbar-brand">Railway Management</span>
+      <div>
+        <a href="home.php" class="btn btn-outline-light btn-sm">Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="auth-card container-small">
+      <h3>🔐 User Login</h3>
+      
+      <?php if ($error): ?>
+        <div class="alert alert-danger"><?= $error ?></div>
+      <?php endif; ?>
+      
+      <form method="POST">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+      </form>
+      
+      <p>New user? <a href="user_signup.php">Sign up here</a></p>
+    </div>
   </div>
 </body>
 </html>
+

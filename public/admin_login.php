@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: admin_dashboard.php");
     exit;
   } else {
-    $error = "Invalid credentials. Only msaqib can login.";
+    $error = "Invalid username or password.";
   }
 }
 ?>
@@ -21,21 +21,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Railway Management</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
 </head>
 <body>
-  <div class="container" style="max-width: 500px;">
-    <h3 class="text-center mb-4 text-white">🔐 Admin Login</h3>
-    <?php if ($error): ?>
-      <div class="alert alert-danger text-center"><?= $error ?></div>
-    <?php endif; ?>
-    <form method="POST">
-      <input type="text" name="username" class="form-control mb-3" placeholder="Username" required>
-      <input type="password" name="password" class="form-control mb-3" placeholder="Password" required>
-      <button type="submit" class="btn btn-dark w-100">Login</button>
-    </form>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container-fluid">
+      <span class="navbar-brand">Railway Management</span>
+      <div>
+        <a href="home.php" class="btn btn-outline-light btn-sm">Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="auth-card container-small">
+      <h3>⚙️ Admin Login</h3>
+      
+      <?php if ($error): ?>
+        <div class="alert alert-danger"><?= $error ?></div>
+      <?php endif; ?>
+      
+      <form method="POST">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>
+
