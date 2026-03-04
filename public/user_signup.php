@@ -3,32 +3,25 @@ include('../config/db.php');
 $success = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $name     = trim($_POST['name'] ?? '');
-  $email    = trim($_POST['email'] ?? '');
-  $password = trim($_POST['password'] ?? '');
+  $name = $_POST['name'];
+  $email = $_POST['email'];
+  $phone = $_POST['phone'];
+  $cnic = $_POST['cnic'];
+  $password = $_POST['password'];
 
-  if ($name === '' || $email === '' || $password === '') {
-    $success = "Please fill in all fields.";
-  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $success = "Please enter a valid email address.";
-  } elseif (strlen($password) < 4) {
-    $success = "Password must be at least 4 characters.";
+  $check = "SELECT * FROM Passenger WHERE email = '$email'";
+  $result = $conn->query($check);
+
+  if ($result->num_rows > 0) {
+    $success = "Email already registered. Try login.";
   } else {
-    $check = "SELECT * FROM Passenger WHERE email = '$email'";
-    $result = $conn->query($check);
-
-    if ($result && $result->num_rows > 0) {
-      $success = "Email already registered. Try login.";
+    $sql = "INSERT INTO Passenger (name, email, phone, cnic, password)
+            VALUES ('$name', '$email', '$phone', '$cnic', '$password')";
+    if ($conn->query($sql)) {
+      header("Location: user_login.php?msg=registered");
+      exit;
     } else {
-      // Insert only required fields; phone and cnic are optional/NULL
-      $sql = "INSERT INTO Passenger (name, email, password)
-              VALUES ('$name', '$email', '$password')";
-      if ($conn->query($sql)) {
-        header("Location: user_login.php?msg=registered");
-        exit;
-      } else {
-        $success = "Registration failed. Try again.";
-      }
+      $success = "Registration failed. Try again.";
     }
   }
 }
@@ -74,8 +67,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         
         <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="text" name="phone" id="phone" class="form-control" placeholder="Enter your phone number" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="cnic">CNIC Number</label>
+          <input type="text" name="cnic" id="cnic" class="form-control" placeholder="CNIC (without dashes)" required>
+        </div>
+        
+        <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" name="password" id="password" class="form-control" placeholder="Create a password (min 4 characters)" required>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Create a password" required>
         </div>
         
         <button type="submit" class="btn btn-primary w-100">Register</button>

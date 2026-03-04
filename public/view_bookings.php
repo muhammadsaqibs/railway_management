@@ -43,8 +43,8 @@ $result = $conn->query($query);
     <div class="card">
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table">
-            <thead>
+          <table class="table table-striped table-bordered bg-white text-dark">
+            <thead class="table-light">
               <tr>
                 <th>Ticket ID</th>
                 <th>Ticket Token</th>
@@ -61,16 +61,16 @@ $result = $conn->query($query);
             <tbody>
               <?php while ($row = $result->fetch_assoc()): ?>
                 <tr>
-                  <td class="text-white"><?= $row['ticket_id'] ?></td>
-                  <td class="text-white"><?= htmlspecialchars($row['ticket_token']) ?></td>
-                  <td class="text-white"><?= htmlspecialchars($row['passenger_name']) ?></td>
-                  <td class="text-white"><?= htmlspecialchars($row['cnic']) ?></td>
-                  <td class="text-white"><?= htmlspecialchars($row['train_name']) ?></td>
-                  <td class="text-white"><?= htmlspecialchars($row['source_city']) ?></td>
-                  <td class="text-white"><?= htmlspecialchars($row['destination_city']) ?></td>
-                  <td class="text-white"><?= $row['seat_no'] ?></td>
-                  <td class="text-white"><?= date('d M Y, H:i', strtotime($row['booking_time'])) ?></td>
-                  <td class="text-white"><?= htmlspecialchars($row['status']) ?></td>
+                  <td><?= $row['ticket_id'] ?></td>
+                  <td><?= htmlspecialchars($row['ticket_token']) ?></td>
+                  <td><?= htmlspecialchars($row['passenger_name']) ?></td>
+                  <td><?= htmlspecialchars($row['cnic']) ?></td>
+                  <td><?= htmlspecialchars($row['train_name']) ?></td>
+                  <td><?= htmlspecialchars($row['source_city']) ?></td>
+                  <td><?= htmlspecialchars($row['destination_city']) ?></td>
+                  <td><?= $row['seat_no'] ?></td>
+                  <td><?= date('d M Y, H:i', strtotime($row['booking_time'])) ?></td>
+                  <td><?= htmlspecialchars($row['status']) ?></td>
                 </tr>
               <?php endwhile; ?>
             </tbody>

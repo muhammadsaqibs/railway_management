@@ -57,35 +57,38 @@ $result = $conn->query($query);
       margin-bottom: 20px;
     }
     .table-card {
-      background: rgba(30, 41, 59, 0.8);
+      background: #ffffff;
       border-radius: 16px;
       overflow: hidden;
     }
     .table {
       margin: 0;
+      background: #ffffff;
+      color: #111827;
     }
     .table thead {
-      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      background: #e5e7eb;
     }
     .table thead th {
-      color: white;
+      color: #111827;
       padding: 15px;
       font-weight: 600;
     }
     .table tbody td {
-      color: #e2e8f0;
+      color: #111827;
       padding: 12px 15px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid #e5e7eb;
     }
     .table tbody tr:hover {
-      background: rgba(59, 130, 246, 0.1);
+      background: #f3f4f6;
     }
     .fare {
-      color: #f59e0b;
+      color: #b45309;
       font-weight: 600;
     }
     .seats-available {
-      color: #10b981;
+      color: #047857;
+      font-weight: 600;
     }
   </style>
 </head>
@@ -112,11 +115,20 @@ $result = $conn->query($query);
       <p class="page-subtitle">Choose your perfect train for your journey</p>
     </div>
 
-    <!-- Train Images Showcase -->
+    <!-- Train Icons Showcase -->
     <div class="train-showcase">
-      <img src="images/train1.png" alt="Express Train">
-      <img src="images/train2.png" alt="Premium Train">
-      <img src="images/train3.png" alt="Economy Train">
+      <div class="card text-center" style="background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.4); color: #e5e7eb; padding: 16px; min-width: 180px;">
+        <div style="font-size: 2rem; margin-bottom: 4px;">🚄</div>
+        <div>Express Service</div>
+      </div>
+      <div class="card text-center" style="background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.4); color: #e5e7eb; padding: 16px; min-width: 180px;">
+        <div style="font-size: 2rem; margin-bottom: 4px;">🚆</div>
+        <div>Standard Service</div>
+      </div>
+      <div class="card text-center" style="background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.4); color: #e5e7eb; padding: 16px; min-width: 180px;">
+        <div style="font-size: 2rem; margin-bottom: 4px;">🚉</div>
+        <div>Local Routes</div>
+      </div>
     </div>
 
     <!-- Back Button -->

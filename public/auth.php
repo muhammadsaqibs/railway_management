@@ -23,37 +23,41 @@ if (isset($_GET['msg']) && $_GET['msg'] === 'registered') {
 
 // Handle Login
 if (isset($_POST['login'])) {
-    $user_type = isset($_POST['user_type']) ? $_POST['user_type'] : 'user';
-    $password  = isset($_POST['password']) ? trim($_POST['password']) : '';
-
+    $user_type = $_POST['user_type'];
+    $password = trim($_POST['password']);
+    
     if ($user_type === 'admin') {
-        $username = isset($_POST['username']) ? trim($_POST['username']) : '';
-
-        if ($username === '' || $password === '') {
+        $username = trim($_POST['username']);
+        
+        if (empty($username) || empty($password)) {
             $error = "Please fill in all fields.";
         } else {
+            // Admin login
             $admin_sql = "SELECT * FROM Admin WHERE username = '$username' AND password = '$password'";
             $admin_result = $conn->query($admin_sql);
-
-            if ($admin_result && $admin_result->num_rows === 1) {
+            
+            if ($admin_result && $admin_result->num_rows == 1) {
                 $_SESSION['admin_logged_in'] = true;
                 $_SESSION['admin_username'] = $username;
                 header("Location: admin_dashboard.php");
                 exit;
             } else {
-                $error = "Invalid admin username or password, or admin does not exist.";
+                $error = "Invalid admin username or password.";
             }
         }
     } else {
-        $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-
-        if ($email === '' || $password === '') {
+        $email = trim($_POST['email']);
+        
+        if (empty($email) || empty($password)) {
             $error = "Please fill in all fields.";
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = "Please enter a valid email address.";
         } else {
+            // User login
             $sql = "SELECT * FROM Passenger WHERE email = '$email' AND password = '$password'";
             $result = $conn->query($sql);
 
-            if ($result && $result->num_rows === 1) {
+            if ($result && $result->num_rows == 1) {
                 $user = $result->fetch_assoc();
                 $_SESSION['user_logged_in'] = true;
                 $_SESSION['user_id'] = $user['passenger_id'];
@@ -61,34 +65,35 @@ if (isset($_POST['login'])) {
                 header("Location: user_dashboard.php");
                 exit;
             } else {
-                $error = "Invalid email or password, or user does not exist.";
+                $error = "Invalid email or password.";
             }
         }
     }
 }
 
-// Handle Registration (simple: name, email, password only)
+// Handle Registration
 if (isset($_POST['register'])) {
-    $name     = trim($_POST['name'] ?? '');
-    $email    = trim($_POST['email'] ?? '');
-    $password = trim($_POST['password'] ?? '');
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $phone = trim($_POST['phone']);
+    $cnic = trim($_POST['cnic']);
+    $password = trim($_POST['password']);
 
-    if ($name === '' || $email === '' || $password === '') {
+    if (empty($name) || empty($email) || empty($phone) || empty($cnic) || empty($password)) {
         $error = "Please fill in all fields.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Please enter a valid email address.";
     } elseif (strlen($password) < 4) {
         $error = "Password must be at least 4 characters.";
     } else {
-        $check  = "SELECT * FROM Passenger WHERE email = '$email'";
+        $check = "SELECT * FROM Passenger WHERE email = '$email'";
         $result = $conn->query($check);
 
-        if ($result && $result->num_rows > 0) {
+        if ($result->num_rows > 0) {
             $error = "Email already registered. Please login.";
         } else {
-            // Phone and CNIC are optional; let them default to NULL
-            $sql = "INSERT INTO Passenger (name, email, password)
-                    VALUES ('$name', '$email', '$password')";
+            $sql = "INSERT INTO Passenger (name, email, phone, cnic, password)
+                    VALUES ('$name', '$email', '$phone', '$cnic', '$password')";
             if ($conn->query($sql)) {
                 $success = "Registration successful! Please login.";
             } else {
@@ -283,7 +288,7 @@ if (isset($_POST['register'])) {
       <div class="back"><a href="home.php">← Back to Home</a></div>
     </form>
 
-    <!-- Register Form (simple) -->
+    <!-- Register Form -->
     <form method="POST" id="register-form" style="display:none;">
       <div class="form-group">
         <label>Full Name</label>
@@ -294,8 +299,16 @@ if (isset($_POST['register'])) {
         <input type="email" name="email" placeholder="Enter your email">
       </div>
       <div class="form-group">
+        <label>Phone</label>
+        <input type="text" name="phone" placeholder="Enter phone number">
+      </div>
+      <div class="form-group">
+        <label>CNIC</label>
+        <input type="text" name="cnic" placeholder="CNIC number">
+      </div>
+      <div class="form-group">
         <label>Password</label>
-        <input type="password" name="password" placeholder="Create password (min 4 characters)">
+        <input type="password" name="password" placeholder="Create password">
       </div>
       <button type="submit" name="register" class="btn btn-primary">Register</button>
     </form>

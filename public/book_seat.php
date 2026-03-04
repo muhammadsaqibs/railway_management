@@ -73,21 +73,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_ticket'])) {
 
 /* ---- Table Colors & Readability ---- */
 .table {
-    background: rgba(0,0,0,0.4);
-    color: #faf7f7ff;
+    background: #ffffff;
+    color: #111827;
 }
 
 .table thead th {
-    background: rgba(118, 75, 162, 0.9);
-    color: #fff;
+    background: #e5e7eb;
+    color: #111827;
 }
 
 .table tbody tr:hover {
-    background: rgba(255,255,255,0.08);
+    background: #f3f4f6;
 }
 
 .table td {
-    color: #0f0e0eff !important;
+    color: #111827 !important;
 }
 
 /* ---- White Soft Text ---- */
