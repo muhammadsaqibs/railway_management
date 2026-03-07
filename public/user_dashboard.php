@@ -14,14 +14,14 @@ if (isset($_GET['booking']) && $_GET['booking'] == 'success' && isset($_SESSION[
             <h4 class='text-center mb-3'>🎉 Booking Successful!</h4>
             <div class='text-center'>
                 <p>Your ticket has been booked successfully.</p>
-                <div class='card mt-3'>
-                    <div class='card-body'>
-                        <h5>Ticket Details</h5>
-                        <p><strong>Ticket Token:</strong> <span class='text-primary'>{$booking['ticket_token']}</span></p>
-                        <p><strong>Booking Time:</strong> " . date('d M Y, H:i', strtotime($booking['booking_time'])) . "</p>
-                        <p><strong>Train ID:</strong> {$booking['train_id']}</p>
-                        <p><strong>Route:</strong> {$booking['source']} → {$booking['destination']}</p>
-                        <p><strong>Seat No:</strong> {$booking['seat_no']}</p>
+                <div class='card mt-3' style='background: rgba(30, 41, 59, 0.9); text-align: left;'>
+                    <div class='card-body text-white'>
+                        <h5 class='text-info border-bottom pb-2 mb-3'>Ticket Details</h5>
+                        <p class='mb-1'><span class='text-muted'>Ticket Token:</span> <strong class='text-success'>{$booking['ticket_token']}</strong></p>
+                        <p class='mb-1'><span class='text-muted'>Booking Time:</span> <strong>" . date('d M Y, H:i', strtotime($booking['booking_time'])) . "</strong></p>
+                        <p class='mb-1'><span class='text-muted'>Train ID:</span> <strong>{$booking['train_id']}</strong></p>
+                        <p class='mb-1'><span class='text-muted'>Route:</span> <strong>{$booking['source']} → {$booking['destination']}</strong></p>
+                        <p class='mb-0'><span class='text-muted'>Seat No:</span> <strong>{$booking['seat_no']}</strong></p>
                     </div>
                 </div>
             </div>
@@ -38,6 +38,7 @@ if (isset($_GET['booking']) && $_GET['booking'] == 'success' && isset($_SESSION[
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard - Railway Management</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="styles.css" rel="stylesheet">
   <style>
     .hero {
@@ -115,7 +116,7 @@ if (isset($_GET['booking']) && $_GET['booking'] == 'success' && isset($_SESSION[
     }
   </style>
 </head>
-<body>
+<body class="theme-user">
   <!-- Navbar -->
   <nav class="navbar">
     <div class="container-fluid">
@@ -129,16 +130,20 @@ if (isset($_GET['booking']) && $_GET['booking'] == 'success' && isset($_SESSION[
 
   <div class="container">
     <!-- Hero Section -->
-    <div class="hero">
-      <h1>🎛️ User Dashboard</h1>
-      <p>Manage your train bookings and travel plans</p>
-    </div>
-
-    <!-- Train Banner -->
-    <div class="train-banner">
-      <img src="images/train1.png" alt="Train 1">
-      <img src="images/train2.png" alt="Train 2">
-      <img src="images/train3.png" alt="Train 3">
+    <div class="hero-slider-container">
+      <div class="hero-slider-track">
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1600&q=80');"></div>
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1541427468627-a89a96e5ca1d?auto=format&fit=crop&w=1600&q=80');"></div>
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1563206767-5b18f218e8de?auto=format&fit=crop&w=1600&q=80');"></div>
+        <!-- Clone first slide for seamless loop -->
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1600&q=80');"></div>
+      </div>
+      <div class="hero-content">
+        <h1><i class="fa-solid fa-gauge"></i> User Dashboard</h1>
+        <div class="typing-container">
+          <span class="typing-text"></span>
+        </div>
+      </div>
     </div>
 
     <?= $booking_message ?>
@@ -146,30 +151,78 @@ if (isset($_GET['booking']) && $_GET['booking'] == 'success' && isset($_SESSION[
     <!-- Dashboard Grid -->
     <div class="dashboard-grid">
       <a href="view_trains.php" class="card">
-        <div class="icon">🚂</div>
+        <div class="icon"><i class="fa-solid fa-train"></i></div>
         <h4>Available Trains</h4>
         <p>Check and explore trains</p>
       </a>
       
       <a href="book_seat.php" class="card">
-        <div class="icon">🎫</div>
+        <div class="icon"><i class="fa-solid fa-ticket"></i></div>
         <h4>Book a Seat</h4>
         <p>Reserve your train ticket</p>
       </a>
       
       <a href="cancel_seat.php" class="card">
-        <div class="icon">❌</div>
+        <div class="icon"><i class="fa-solid fa-ban"></i></div>
         <h4>Cancel Seat</h4>
         <p>Cancel your booking</p>
       </a>
       
       <a href="view_bookings.php" class="card">
-        <div class="icon">📋</div>
+        <div class="icon"><i class="fa-solid fa-list-check"></i></div>
         <h4>My Bookings</h4>
         <p>View your booking history</p>
       </a>
     </div>
   </div>
+
+<script>
+const words = [
+  "Manage your train bookings effortlessly.",
+  "Plan your travel with ease.",
+  "Check seat availability in real-time."
+];
+let i = 0;
+let timer;
+
+function typingEffect() {
+    let word = words[i].split("");
+    var loopTyping = function() {
+        if (word.length > 0) {
+            document.querySelector('.typing-text').innerHTML += word.shift();
+        } else {
+            setTimeout(deletingEffect, 2500);
+            return false;
+        }
+        timer = setTimeout(loopTyping, 70);
+    };
+    loopTyping();
+}
+
+function deletingEffect() {
+    let word = words[i].split("");
+    var loopDeleting = function() {
+        if (word.length > 0) {
+            word.pop();
+            document.querySelector('.typing-text').innerHTML = word.join("");
+        } else {
+            if (words.length > (i + 1)) {
+                i++;
+            } else {
+                i = 0;
+            }
+            setTimeout(typingEffect, 500);
+            return false;
+        }
+        timer = setTimeout(loopDeleting, 30);
+    };
+    loopDeleting();
+}
+if(document.querySelector('.typing-text')){
+    typingEffect();
+}
+</script>
+
 </body>
 </html>
 

@@ -3,25 +3,31 @@ include('../config/db.php');
 $success = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $name = $_POST['name'];
-  $email = $_POST['email'];
-  $phone = $_POST['phone'];
-  $cnic = $_POST['cnic'];
-  $password = $_POST['password'];
+  $email    = trim($_POST['email'] ?? '');
+  $password = trim($_POST['password'] ?? '');
 
-  $check = "SELECT * FROM Passenger WHERE email = '$email'";
-  $result = $conn->query($check);
-
-  if ($result->num_rows > 0) {
-    $success = "Email already registered. Try login.";
+  if ($email === '' || $password === '') {
+    $success = "Please enter email and password.";
+  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $success = "Please enter a valid email address.";
+  } elseif (strlen($password) < 4) {
+    $success = "Password must be at least 4 characters.";
   } else {
-    $sql = "INSERT INTO Passenger (name, email, phone, cnic, password)
-            VALUES ('$name', '$email', '$phone', '$cnic', '$password')";
-    if ($conn->query($sql)) {
-      header("Location: user_login.php?msg=registered");
-      exit;
+    $check  = "SELECT * FROM Passenger WHERE email = '$email'";
+    $result = $conn->query($check);
+
+    if ($result && $result->num_rows > 0) {
+      $success = "Email already registered. Try login.";
     } else {
-      $success = "Registration failed. Try again.";
+      // Store only email and password; other columns left NULL
+      $sql = "INSERT INTO Passenger (email, password)
+              VALUES ('$email', '$password')";
+      if ($conn->query($sql)) {
+        header("Location: user_login.php?msg=registered");
+        exit;
+      } else {
+        $success = "Registration failed. Try again.";
+      }
     }
   }
 }
@@ -57,28 +63,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       
       <form method="POST">
         <div class="form-group">
-          <label for="name">Full Name</label>
-          <input type="text" name="name" id="name" class="form-control" placeholder="Enter your full name" required>
-        </div>
-        
-        <div class="form-group">
           <label for="email">Email Address</label>
           <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
         </div>
         
         <div class="form-group">
-          <label for="phone">Phone Number</label>
-          <input type="text" name="phone" id="phone" class="form-control" placeholder="Enter your phone number" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="cnic">CNIC Number</label>
-          <input type="text" name="cnic" id="cnic" class="form-control" placeholder="CNIC (without dashes)" required>
-        </div>
-        
-        <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" name="password" id="password" class="form-control" placeholder="Create a password" required>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Create a password (min 4 characters)" required>
         </div>
         
         <button type="submit" class="btn btn-primary w-100">Register</button>

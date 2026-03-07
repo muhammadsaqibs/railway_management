@@ -63,24 +63,24 @@ $result = $conn->query($query);
     }
     .table {
       margin: 0;
-      background: #ffffff;
-      color: #111827;
+      background: #ffffff !important;
+      color: #111827 !important;
     }
     .table thead {
-      background: #e5e7eb;
+      background: #e5e7eb !important;
     }
     .table thead th {
-      color: #111827;
+      color: #111827 !important;
       padding: 15px;
       font-weight: 600;
     }
     .table tbody td {
-      color: #111827;
+      color: #111827 !important;
       padding: 12px 15px;
       border-bottom: 1px solid #e5e7eb;
     }
     .table tbody tr:hover {
-      background: #f3f4f6;
+      background: #f3f4f6 !important;
     }
     .fare {
       color: #b45309;

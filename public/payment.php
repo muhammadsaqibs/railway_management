@@ -62,51 +62,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if ($message): ?>
       <div class="alert alert-success text-center"><?= $message ?></div>
       <!-- Ticket Receipt -->
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title text-center text-white">🎫 Ticket Receipt</h5>
-          <div class="row">
-            <div class="col-6"><strong>Ticket Token:</strong></div>
-            <div class="col-6"><?= $ticket['ticket_token'] ?></div>
+      <div class="card mb-4" style="background: rgba(30, 41, 59, 0.9);">
+        <div class="card-body text-white">
+          <h5 class="card-title text-center text-info mb-4">🎫 Ticket Receipt</h5>
+          <div class="row mb-2">
+            <div class="col-6 text-muted">Ticket Token:</div>
+            <div class="col-6 fw-bold text-success"><?= $ticket['ticket_token'] ?></div>
           </div>
-          <div class="row">
-            <div class="col-6"><strong>Train:</strong></div>
-            <div class="col-6"><?= $ticket['train_name'] ?></div>
+          <div class="row mb-2">
+            <div class="col-6 text-muted">Train:</div>
+            <div class="col-6 fw-bold"><?= $ticket['train_name'] ?></div>
           </div>
-          <div class="row">
-            <div class="col-6"><strong>From:</strong></div>
-            <div class="col-6"><?= $ticket['source_city'] ?></div>
+          <div class="row mb-2">
+            <div class="col-6 text-muted">From:</div>
+            <div class="col-6 fw-bold"><?= $ticket['source_city'] ?></div>
           </div>
-          <div class="row">
-            <div class="col-6"><strong>To:</strong></div>
-            <div class="col-6"><?= $ticket['destination_city'] ?></div>
+          <div class="row mb-2">
+            <div class="col-6 text-muted">To:</div>
+            <div class="col-6 fw-bold"><?= $ticket['destination_city'] ?></div>
           </div>
-          <div class="row">
-            <div class="col-6"><strong>Departure:</strong></div>
-            <div class="col-6"><?= $ticket['departure_time'] ?></div>
+          <div class="row mb-2">
+            <div class="col-6 text-muted">Departure:</div>
+            <div class="col-6 fw-bold"><?= $ticket['departure_time'] ?></div>
           </div>
-          <div class="row">
-            <div class="col-6"><strong>Arrival:</strong></div>
-            <div class="col-6"><?= $ticket['arrival_time'] ?></div>
+          <div class="row mb-2">
+            <div class="col-6 text-muted">Arrival:</div>
+            <div class="col-6 fw-bold"><?= $ticket['arrival_time'] ?></div>
           </div>
-          <div class="row">
-            <div class="col-6"><strong>Seat No:</strong></div>
-            <div class="col-6"><?= $ticket['seat_no'] ?></div>
+          <div class="row mb-2">
+            <div class="col-6 text-muted">Seat No:</div>
+            <div class="col-6 fw-bold"><?= $ticket['seat_no'] ?></div>
           </div>
-          <div class="row">
-            <div class="col-6"><strong>Fare:</strong></div>
-            <div class="col-6">Rs. <?= $fare ?></div>
+          <div class="row mb-2">
+            <div class="col-6 text-muted">Fare:</div>
+            <div class="col-6 fw-bold text-warning">Rs. <?= $fare ?></div>
           </div>
-          <div class="row">
-            <div class="col-6"><strong>CNIC:</strong></div>
-            <div class="col-6"><?= $ticket['cnic'] ?></div>
+          <div class="row mb-2">
+            <div class="col-6 text-muted">CNIC:</div>
+            <div class="col-6 fw-bold"><?= $ticket['cnic'] ?></div>
           </div>
-          <div class="row">
-            <div class="col-6"><strong>Booking Time:</strong></div>
-            <div class="col-6"><?= $ticket['booking_time'] ?></div>
+          <div class="row mb-2">
+            <div class="col-6 text-muted">Booking Time:</div>
+            <div class="col-6 fw-bold"><?= $ticket['booking_time'] ?></div>
           </div>
-          <hr>
-          <p class="text-center text-white"><strong>Important Notice:</strong> Please arrive at the station at least 10 minutes before the departure time for a smooth boarding experience.</p>
+          <hr style="border-color: rgba(255,255,255,0.2);">
+          <p class="text-center text-warning small mt-3"><i class="fa-solid fa-circle-exclamation"></i> <strong>Important Notice:</strong> Please arrive at the station at least 10 minutes before the departure time for a smooth boarding experience.</p>
         </div>
       </div>
     <?php else: ?>

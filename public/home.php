@@ -112,7 +112,7 @@ color:#ccc;
 
 </head>
 
-<body>
+<body class="theme-home">
 
 <!-- Navbar -->
 
@@ -137,16 +137,20 @@ color:#ccc;
 
 <div class="container">
 
-<div class="hero">
-
-<span class="hero-icon">🚄</span>
-
-<h1>Welcome to Railway Management System</h1>
-
-<p>
-Book train tickets quickly, manage your journeys, and explore railway schedules easily with our modern railway booking platform.
-</p>
-
+<div class="hero-slider-container">
+  <div class="hero-slider-track">
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1541427468627-a89a96e5ca1d?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1563206767-5b18f218e8de?auto=format&fit=crop&w=1600&q=80');"></div>
+    <!-- Clone first slide for seamless loop -->
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1600&q=80');"></div>
+  </div>
+  <div class="hero-content">
+    <h1><i class="fa-solid fa-train"></i> Welcome to Railway Management System</h1>
+    <div class="typing-container">
+      <span class="typing-text"></span>
+    </div>
+  </div>
 </div>
 
 
@@ -257,6 +261,54 @@ Book train tickets quickly, manage your journeys, and explore railway schedules 
 </div>
 
 </div>
+
+<script>
+const words = [
+  "Book train tickets quickly and securely.",
+  "Manage your journeys with ease.",
+  "Explore railway schedules dynamically.",
+  "Experience the comfort of modern travel."
+];
+let i = 0;
+let timer;
+
+function typingEffect() {
+    let word = words[i].split("");
+    var loopTyping = function() {
+        if (word.length > 0) {
+            document.querySelector('.typing-text').innerHTML += word.shift();
+        } else {
+            setTimeout(deletingEffect, 2500);
+            return false;
+        }
+        timer = setTimeout(loopTyping, 70);
+    };
+    loopTyping();
+}
+
+function deletingEffect() {
+    let word = words[i].split("");
+    var loopDeleting = function() {
+        if (word.length > 0) {
+            word.pop();
+            document.querySelector('.typing-text').innerHTML = word.join("");
+        } else {
+            if (words.length > (i + 1)) {
+                i++;
+            } else {
+                i = 0;
+            }
+            setTimeout(typingEffect, 500);
+            return false;
+        }
+        timer = setTimeout(loopDeleting, 30);
+    };
+    loopDeleting();
+}
+if(document.querySelector('.typing-text')){
+    typingEffect();
+}
+</script>
 
 </body>
 </html>

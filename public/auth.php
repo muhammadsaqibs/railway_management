@@ -24,13 +24,15 @@ if (isset($_GET['msg']) && $_GET['msg'] === 'registered') {
 // Handle Login
 if (isset($_POST['login'])) {
     $user_type = $_POST['user_type'];
-    $password = trim($_POST['password']);
     
     if ($user_type === 'admin') {
         $username = trim($_POST['username']);
+        $password = trim($_POST['admin_password'] ?? '');
         
-        if (empty($username) || empty($password)) {
-            $error = "Please fill in all fields.";
+        if (empty($username)) {
+            $error = "Admin Username is required.";
+        } elseif (empty($password)) {
+            $error = "Admin Password is required.";
         } else {
             // Admin login
             $admin_sql = "SELECT * FROM Admin WHERE username = '$username' AND password = '$password'";
@@ -47,9 +49,12 @@ if (isset($_POST['login'])) {
         }
     } else {
         $email = trim($_POST['email']);
+        $password = trim($_POST['user_password'] ?? '');
         
-        if (empty($email) || empty($password)) {
-            $error = "Please fill in all fields.";
+        if (empty($email)) {
+            $error = "User Email Address is required.";
+        } elseif (empty($password)) {
+            $error = "User Password is required.";
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error = "Please enter a valid email address.";
         } else {
@@ -71,29 +76,29 @@ if (isset($_POST['login'])) {
     }
 }
 
-// Handle Registration
+// Handle Registration - only email & password required
 if (isset($_POST['register'])) {
-    $name = trim($_POST['name']);
-    $email = trim($_POST['email']);
-    $phone = trim($_POST['phone']);
-    $cnic = trim($_POST['cnic']);
-    $password = trim($_POST['password']);
+    $email    = trim($_POST['email'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
-    if (empty($name) || empty($email) || empty($phone) || empty($cnic) || empty($password)) {
-        $error = "Please fill in all fields.";
+    if (empty($email)) {
+        $error = "Registration Email is required.";
+    } elseif (empty($password)) {
+        $error = "Registration Password is required.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Please enter a valid email address.";
     } elseif (strlen($password) < 4) {
         $error = "Password must be at least 4 characters.";
     } else {
-        $check = "SELECT * FROM Passenger WHERE email = '$email'";
+        $check  = "SELECT * FROM Passenger WHERE email = '$email'";
         $result = $conn->query($check);
 
-        if ($result->num_rows > 0) {
+        if ($result && $result->num_rows > 0) {
             $error = "Email already registered. Please login.";
         } else {
-            $sql = "INSERT INTO Passenger (name, email, phone, cnic, password)
-                    VALUES ('$name', '$email', '$phone', '$cnic', '$password')";
+            // Name/phone/cnic optional; store only email & password
+            $sql = "INSERT INTO Passenger (email, password)
+                    VALUES ('$email', '$password')";
             if ($conn->query($sql)) {
                 $success = "Registration successful! Please login.";
             } else {
@@ -264,11 +269,11 @@ if (isset($_POST['register'])) {
       <div id="user-fields" class="form-section active">
         <div class="form-group">
           <label>Email</label>
-          <input type="email" name="email" placeholder="Enter your email">
+          <input type="email" id="user_email" name="email" placeholder="Enter your email" required>
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input type="password" name="password" placeholder="Enter your password">
+          <input type="password" id="user_pass" name="user_password" placeholder="Enter your password" required>
         </div>
       </div>
 
@@ -276,11 +281,11 @@ if (isset($_POST['register'])) {
       <div id="admin-fields" class="form-section">
         <div class="form-group">
           <label>Admin Username</label>
-          <input type="text" name="username" placeholder="Enter admin username">
+          <input type="text" id="admin_user" name="username" placeholder="Enter admin username">
         </div>
         <div class="form-group">
           <label>Admin Password</label>
-          <input type="password" name="password" placeholder="Enter admin password">
+          <input type="password" id="admin_pass" name="admin_password" placeholder="Enter admin password">
         </div>
       </div>
 
@@ -291,24 +296,12 @@ if (isset($_POST['register'])) {
     <!-- Register Form -->
     <form method="POST" id="register-form" style="display:none;">
       <div class="form-group">
-        <label>Full Name</label>
-        <input type="text" name="name" placeholder="Enter your full name">
-      </div>
-      <div class="form-group">
         <label>Email</label>
-        <input type="email" name="email" placeholder="Enter your email">
-      </div>
-      <div class="form-group">
-        <label>Phone</label>
-        <input type="text" name="phone" placeholder="Enter phone number">
-      </div>
-      <div class="form-group">
-        <label>CNIC</label>
-        <input type="text" name="cnic" placeholder="CNIC number">
+        <input type="email" id="reg_email" name="email" placeholder="Enter your email">
       </div>
       <div class="form-group">
         <label>Password</label>
-        <input type="password" name="password" placeholder="Create password">
+        <input type="password" id="reg_pass" name="password" placeholder="Create password (min 4 characters)">
       </div>
       <button type="submit" name="register" class="btn btn-primary">Register</button>
     </form>
@@ -320,32 +313,95 @@ if (isset($_POST['register'])) {
       const loginForm = document.getElementById('login-form');
       const registerForm = document.getElementById('register-form');
       
+      const regEmail = document.getElementById('reg_email');
+      const regPass = document.getElementById('reg_pass');
+      
       if (tab === 'login') {
         buttons[0].classList.add('active');
         buttons[1].classList.remove('active');
         loginForm.style.display = 'block';
         registerForm.style.display = 'none';
+        
+        regEmail.removeAttribute('required');
+        regPass.removeAttribute('required');
+        regEmail.disabled = true;
+        regPass.disabled = true;
+
+        toggleFields(); // Ensure correct login fields are active and required
       } else {
         buttons[0].classList.remove('active');
         buttons[1].classList.add('active');
         loginForm.style.display = 'none';
         registerForm.style.display = 'block';
+        
+        regEmail.setAttribute('required', 'true');
+        regPass.setAttribute('required', 'true');
+        regEmail.disabled = false;
+        regPass.disabled = false;
+        
+        // Remove required and disable all login fields
+        const loginInputs = [
+            document.getElementById('user_email'),
+            document.getElementById('user_pass'),
+            document.getElementById('admin_user'),
+            document.getElementById('admin_pass')
+        ];
+        
+        loginInputs.forEach(input => {
+            if(input) {
+                input.removeAttribute('required');
+                input.disabled = true;
+            }
+        });
       }
     }
 
     function toggleFields() {
+      // Only run this if we are on the login form
+      if(document.getElementById('login-form').style.display === 'none') return;
+      
       const userType = document.querySelector('select[name="user_type"]').value;
       const userFields = document.getElementById('user-fields');
       const adminFields = document.getElementById('admin-fields');
       
+      const userEmail = document.getElementById('user_email');
+      const userPass = document.getElementById('user_pass');
+      const adminUser = document.getElementById('admin_user');
+      const adminPass = document.getElementById('admin_pass');
+      
       if (userType === 'admin') {
         userFields.classList.remove('active');
         adminFields.classList.add('active');
+        
+        adminUser.setAttribute('required', 'true');
+        adminPass.setAttribute('required', 'true');
+        adminUser.disabled = false;
+        adminPass.disabled = false;
+        
+        userEmail.removeAttribute('required');
+        userPass.removeAttribute('required');
+        userEmail.disabled = true;
+        userPass.disabled = true;
       } else {
         userFields.classList.add('active');
         adminFields.classList.remove('active');
+        
+        userEmail.setAttribute('required', 'true');
+        userPass.setAttribute('required', 'true');
+        userEmail.disabled = false;
+        userPass.disabled = false;
+        
+        adminUser.removeAttribute('required');
+        adminPass.removeAttribute('required');
+        adminUser.disabled = true;
+        adminPass.disabled = true;
       }
     }
+    
+    // Initialize properly on load
+    document.addEventListener("DOMContentLoaded", function() {
+        showTab('login');
+    });
   </script>
 </body>
 </html>

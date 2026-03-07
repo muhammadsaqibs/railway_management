@@ -97,7 +97,7 @@ color:#ccc;
 
 </head>
 
-<body>
+<body class="theme-admin">
 
 <!-- Navbar -->
 
@@ -126,12 +126,20 @@ color:#ccc;
 
 <!-- Hero -->
 
-<div class="hero">
-
-<h1><i class="fa-solid fa-screwdriver-wrench"></i> Admin Dashboard</h1>
-
-<p>Manage trains, bookings and system operations efficiently.</p>
-
+<div class="hero-slider-container">
+  <div class="hero-slider-track">
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1541427468627-a89a96e5ca1d?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1563206767-5b18f218e8de?auto=format&fit=crop&w=1600&q=80');"></div>
+    <!-- Clone first slide for seamless loop -->
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1600&q=80');"></div>
+  </div>
+  <div class="hero-content">
+    <h1><i class="fa-solid fa-screwdriver-wrench"></i> Admin Dashboard</h1>
+    <div class="typing-container">
+      <span class="typing-text"></span>
+    </div>
+  </div>
 </div>
 
 
@@ -220,6 +228,53 @@ color:#ccc;
 </div>
 
 </div>
+
+<script>
+const words = [
+  "Manage trains securely and efficiently.",
+  "Oversee all bookings and system operations.",
+  "Ensure a seamless experience for passengers."
+];
+let i = 0;
+let timer;
+
+function typingEffect() {
+    let word = words[i].split("");
+    var loopTyping = function() {
+        if (word.length > 0) {
+            document.querySelector('.typing-text').innerHTML += word.shift();
+        } else {
+            setTimeout(deletingEffect, 2500);
+            return false;
+        }
+        timer = setTimeout(loopTyping, 70);
+    };
+    loopTyping();
+}
+
+function deletingEffect() {
+    let word = words[i].split("");
+    var loopDeleting = function() {
+        if (word.length > 0) {
+            word.pop();
+            document.querySelector('.typing-text').innerHTML = word.join("");
+        } else {
+            if (words.length > (i + 1)) {
+                i++;
+            } else {
+                i = 0;
+            }
+            setTimeout(typingEffect, 500);
+            return false;
+        }
+        timer = setTimeout(loopDeleting, 30);
+    };
+    loopDeleting();
+}
+if(document.querySelector('.typing-text')){
+    typingEffect();
+}
+</script>
 
 </body>
 </html>

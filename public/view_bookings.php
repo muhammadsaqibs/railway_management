@@ -34,6 +34,22 @@ $result = $conn->query($query);
   <title>View Bookings</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
+  <style>
+    /* Force table to have dark text against the white background */
+    .table.bg-white {
+      background-color: #ffffff !important;
+    }
+    .table.bg-white thead th,
+    .table.bg-white tbody td {
+      color: #1e293b !important;
+    }
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(0, 0, 0, 0.05) !important;
+    }
+    .table tbody tr:hover {
+      background-color: rgba(0, 0, 0, 0.075) !important;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
