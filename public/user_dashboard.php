@@ -39,7 +39,7 @@ if (isset($_GET['booking']) && $_GET['booking'] == 'success' && isset($_SESSION[
   <title>User Dashboard - Railway Management</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="styles.css" rel="stylesheet">
+  <link href="styles.css?v=1.1" rel="stylesheet">
   <style>
     .hero {
       text-align: center;

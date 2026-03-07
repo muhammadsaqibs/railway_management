@@ -1,9 +1,17 @@
 <?php
 // Database Setup Script - Run this once to create the database
 
-$host = "localhost";
-$user = "root";
-$password = "";
+$env_path = __DIR__ . '/../.env';
+if (file_exists($env_path)) {
+    $env_vars = parse_ini_file($env_path);
+    $host = $env_vars['DB_HOST'] ?? "localhost";
+    $user = $env_vars['DB_USER'] ?? "root";
+    $password = $env_vars['DB_PASS'] ?? "";
+} else {
+    $host = "localhost";
+    $user = "root";
+    $password = "";
+}
 
 $conn = new mysqli($host, $user, $password);
 

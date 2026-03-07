@@ -2,16 +2,7 @@
 session_start();
 
 // Database connection
-$host = "localhost";
-$user = "root";
-$password = "";
-$database = "railway_management";
-
-$conn = new mysqli($host, $user, $password, $database);
-
-if ($conn->connect_error) {
-    die("Database Connection Error: " . $conn->connect_error);
-}
+include('../config/db.php');
 
 $error = "";
 $success = "";
